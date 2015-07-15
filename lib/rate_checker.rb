@@ -43,6 +43,7 @@ module RateChecker
     end
 
     def on_trend?
+      return unless recently_rates.count >= 3
       uptrend? || downtrend?
     end
 
