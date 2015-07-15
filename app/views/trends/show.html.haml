@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Kind:
+  = @trend.kind
+%p
+  %b Rate:
+  = @trend.rate_id
+
+= link_to 'Edit', edit_trend_path(@trend)
+\|
+= link_to 'Back', trends_path
