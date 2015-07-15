@@ -42,7 +42,7 @@ class TrendsController < ApplicationController
   def update
     respond_to do |format|
       if @trend.update(trend_params)
-        format.html { redirect_to @trend, notice: 'Trend was successfully updated.' }
+        format.html { redirect_to trends_path, notice: 'Trend was successfully updated.' }
         format.json { render :show, status: :ok, location: @trend }
       else
         format.html { render :edit }
@@ -69,6 +69,6 @@ class TrendsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trend_params
-      params.require(:trend).permit(:kind, :rate_id)
+      params.require(:trend).permit(:fundamental, :profit)
     end
 end

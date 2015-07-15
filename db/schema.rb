@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715044451) do
+ActiveRecord::Schema.define(version: 20150715055618) do
 
   create_table "rates", force: :cascade do |t|
     t.string   "currency_pair"
@@ -23,8 +23,10 @@ ActiveRecord::Schema.define(version: 20150715044451) do
   create_table "trends", force: :cascade do |t|
     t.string   "kind"
     t.integer  "rate_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "fundamental"
+    t.decimal  "profit"
   end
 
 end
