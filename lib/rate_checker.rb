@@ -11,7 +11,7 @@ module RateChecker
     def execute
       value = get_rate_value
       save_rate(value)
-      save_trend if on_trend?
+      save_trend
     end
 
     private
@@ -62,9 +62,15 @@ module RateChecker
     end
 
     def save_trend
-      trend_value = (uptrend? ? 'up' : 'down')
-      recently_rates[0].create_trend!(kind: trend_value)
-      Rails.logger.info "[Trend] currency: #{currency_pair}, kind: #{trend_value}"
+      User.all.each do |user|
+        next unless on_trend?
+
+        trend_value = (uptrend? ? 'up' : 'down')
+        recently_rates[0].create_trend!(kind: trend_value)
+        Rails.logger.info "[Trend] currency: #{currency_pair}, kind: #{trend_value}"
+
+        TrendMailer.trend_email(user, trend_value, currency_pair).deliver
+      end
     end
   end
 end
