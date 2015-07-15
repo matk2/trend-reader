@@ -6,7 +6,8 @@ module RateChecker
 
     def execute
       value = get_rate_value
-      save(value)
+      save_rate(value)
+      save_trend if on_trend?
     end
 
     private
@@ -20,8 +21,9 @@ module RateChecker
       page.search("span[@class='bld']").text.split[0]
     end
 
-    def save(value)
-      Rate.create(currency_pair: currency_pair, value: value)
+    def save_rate(value)
+      Rate.create!(currency_pair: currency_pair, value: value)
+      Rails.logger.info "[Saved] currency:#{currency_pair}, rate: #{value}"
     end
 
     def converter_from
@@ -34,6 +36,30 @@ module RateChecker
 
     def currency_pair
       [converter_from, converter_to].join('/')
+    end
+
+    def on_trend?
+      uptrend? || downtrend?
+    end
+
+    def uptrend?
+      (recently_rates[0].value > recently_rates[1].value) &&
+        recently_rates[1].value > recently_rates[2].value
+    end
+
+    def downtrend?
+      (recently_rates[0].value < recently_rates[1].value) &&
+        (recently_rates[1].value < recently_rates[2].value)
+    end
+
+    def recently_rates
+      @recently_rates ||= Rate.where(currency_pair: currency_pair).order("created_at DESC")[0..2]
+    end
+
+    def save_trend
+      trend_value = (uptrend? ? 'up' : 'down')
+      recently_rates[0].create_trend!(kind: trend_value)
+      Rails.logger.info "[Trend] currency: #{currency_pair}, kind: #{trend_value}"
     end
   end
 end
