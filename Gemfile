@@ -31,6 +31,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'haml-rails'
 gem 'mechanize'
+gem 'devise', '~> 3.4.0'
 
 group :development, :test do
   gem 'byebug'

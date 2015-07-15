@@ -17,3 +17,5 @@
         %td= trend.fundamental
         %td= trend.profit
         %td= link_to 'Edit', edit_trend_path(trend)
+
+= link_to 'logout', destroy_user_session_path, method: :delete
