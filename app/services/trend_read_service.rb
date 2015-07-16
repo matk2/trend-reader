@@ -18,7 +18,7 @@ class TrendReadService
   def execute
     return unless on_trend?
 
-    user.trends.create(kind: trend_value, rete_id: recently_rates[0].id)
+    user.trends.create(kind: trend_value, rate_id: recently_rates[0].id)
     Rails.logger.info "[Trend] currency: #{currency_pair.display_name}, kind: #{trend_value}"
 
     TrendMailer.trend_email(user, trend_value, currency_pair.display_name).deliver

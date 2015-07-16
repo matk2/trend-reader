@@ -11,11 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150716132650) do
+ActiveRecord::Schema.define(version: 20150716132942) do
 
   create_table "currency_pairs", force: :cascade do |t|
     t.string "base"
     t.string "quote"
+  end
+
+  create_table "deals", force: :cascade do |t|
+    t.integer "trend_id"
+    t.string  "fundamental"
+    t.decimal "profit"
+    t.integer "user_id"
   end
 
   create_table "rates", force: :cascade do |t|
