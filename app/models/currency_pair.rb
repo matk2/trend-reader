@@ -9,7 +9,13 @@ class CurrencyPair < ActiveRecord::Base
 
   def fetch_rate
     value = get_rate_value
-    save_rate(value)
+    rates.create(value: value)
+    Rails.logger.info "[Saved] currency:#{display_name}, rate: #{value}"
+  end
+
+  def get_rate_value
+    page = agent.get("https://www.google.com/finance/converter?a=1&from=#{base}&to=#{quote}")
+    page.search("span[@class='bld']").text.split[0]
   end
 
   def display_name
@@ -20,15 +26,5 @@ class CurrencyPair < ActiveRecord::Base
 
   def agent
     @agent ||= Mechanize.new
-  end
-
-  def get_rate_value
-    page = agent.get("https://www.google.com/finance/converter?a=1&from=#{base}&to=#{quote}")
-    page.search("span[@class='bld']").text.split[0]
-  end
-
-  def save_rate(value)
-    rates.create(value: value)
-    Rails.logger.info "[Saved] currency:#{display_name}, rate: #{value}"
   end
 end
