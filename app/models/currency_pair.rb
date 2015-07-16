@@ -1,10 +1,20 @@
 class CurrencyPair < ActiveRecord::Base
   has_many :rates
 
+  def self.fetch_rate
+    all.each do |currency_pair|
+      currency_pair.fetch_rate
+    end
+  end
+
   def fetch_rate
     value = get_rate_value
     save_rate(value)
     save_trend
+  end
+
+  def display_name
+    [base, quote].join('/')
   end
 
   private
@@ -20,11 +30,7 @@ class CurrencyPair < ActiveRecord::Base
 
   def save_rate(value)
     rates.create(value: value)
-    Rails.logger.info "[Saved] currency:#{currency_pair}, rate: #{value}"
-  end
-
-  def currency_pair
-    [base, quote].join('/')
+    Rails.logger.info "[Saved] currency:#{display_name}, rate: #{value}"
   end
 
   def on_trend?
@@ -52,9 +58,9 @@ class CurrencyPair < ActiveRecord::Base
 
       trend_value = (uptrend? ? 'up' : 'down')
       recently_rates[0].create_trend!(kind: trend_value)
-      Rails.logger.info "[Trend] currency: #{currency_pair}, kind: #{trend_value}"
+      Rails.logger.info "[Trend] currency: #{display_name}, kind: #{trend_value}"
 
-      TrendMailer.trend_email(user, trend_value, currency_pair).deliver
+      TrendMailer.trend_email(user, trend_value, display_name).deliver
     end
   end
 end
