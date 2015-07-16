@@ -1,12 +1,7 @@
-require 'rate_checker'
-Dir[File.expand_path('../../rate_checker', __FILE__) << '/*.rb'].each do |file|
-  require file
-end
-
 namespace :all do
   task check: :environment do
-    RateChecker.currencies.each do |currency|
-      "rate_checker/#{currency}".camelize.constantize.new.execute
+    CurrencyPair.all.each do |currency_pair|
+      currency_pair.fetch_rate
     end
   end
 end

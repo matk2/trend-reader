@@ -5,3 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+[
+ ['USD', 'JPY'],
+ ['EUR', 'JPY'],
+ ['GBP', 'JPY'],
+ ['CAD', 'JPY'],
+ ['CHF', 'JPY'],
+ ['CNH', 'JPY'],
+ ['EUR', 'USD']
+].each { |base, quote| CurrencyPair.create(base: base, quote: quote) }
