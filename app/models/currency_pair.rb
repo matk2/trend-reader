@@ -1,4 +1,6 @@
 class CurrencyPair < ActiveRecord::Base
+  has_many :rates
+
   def fetch_rate
     value = get_rate_value
     save_rate(value)
@@ -17,7 +19,7 @@ class CurrencyPair < ActiveRecord::Base
   end
 
   def save_rate(value)
-    Rate.create!(currency_pair: currency_pair, value: value)
+    rates.create(value: value)
     Rails.logger.info "[Saved] currency:#{currency_pair}, rate: #{value}"
   end
 
@@ -41,7 +43,7 @@ class CurrencyPair < ActiveRecord::Base
   end
 
   def recently_rates
-    @recently_rates ||= Rate.where(currency_pair: currency_pair).order("created_at DESC")[0..2]
+    @recently_rates ||= rates.order("created_at DESC")[0..2]
   end
 
   def save_trend
