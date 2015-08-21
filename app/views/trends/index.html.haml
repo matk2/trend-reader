@@ -5,8 +5,6 @@
     %tr
       %th Trend
       %th Currency Pair
-      %th Fundamental
-      %th Profit
       %th
 
   %tbody
@@ -14,10 +12,7 @@
       %tr
         %td= trend.kind
         %td= trend.rate.currency_pair.display_name
-        %td
-          = trend.deal.try(:fundamental) || '-'
-        %td
-          = trend.deal.try(:profit) || '-'
-        %td= link_to 'Edit', edit_trend_path(trend)
+        %td= link_to 'New deal', new_deal_path(trend_id: trend.id)
 
+= link_to 'Deals', deals_path
 = link_to 'logout', destroy_user_session_path, method: :delete

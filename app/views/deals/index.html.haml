@@ -1,0 +1,20 @@
+%h1 Listing deals
+
+%table
+  %thead
+    %tr
+      %th Trend
+      %th Currency Pair
+      %th Fundamental
+      %th Profit
+
+  %tbody
+    - @deals.each do |deal|
+      %tr
+        %td= deal.trend.kind
+        %td= deal.trend.rate.currency_pair.display_name
+        %td= deal.fundamental
+        %td= deal.profit
+        %td= link_to 'Edit', edit_deal_path(deal)
+
+= link_to 'Trends', trends_path
