@@ -25,6 +25,10 @@ class CurrencyPair < ActiveRecord::Base
   private
 
   def agent
-    @agent ||= Mechanize.new
+    return @agent if @agent
+
+    @agent = Mechanize.new
+    @agent.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    @agent
   end
 end

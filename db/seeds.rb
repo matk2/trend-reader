@@ -10,8 +10,6 @@
  ['USD', 'JPY'],
  ['EUR', 'JPY'],
  ['GBP', 'JPY'],
- ['CAD', 'JPY'],
- ['CHF', 'JPY'],
- ['CNH', 'JPY'],
- ['EUR', 'USD']
+ ['EUR', 'USD'],
+ ['GBP', 'USD']
 ].each { |base, quote| CurrencyPair.create(base: base, quote: quote) }
